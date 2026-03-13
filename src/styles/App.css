@@ -15,6 +15,17 @@
   --border-color: #2a2a2a;
 }
 
+body.light-mode {
+  --bg-dark: #f0f2f5;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8f9fa;
+  --text-main: #1a1a1a;
+  --text-muted: #666666;
+  --primary-red: #e74c3c;
+  --primary-red-hover: #c0392b;
+  --border-color: #e1e4e8;
+}
+
 body {
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: var(--bg-dark);
@@ -177,7 +188,7 @@ body {
 }
 
 .input::placeholder {
-  color: #555;
+  color: var(--text-muted);
 }
 
 .btn-primary {
@@ -263,7 +274,7 @@ body {
   padding: 18px 20px;
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-dark);
-  color: #ddd;
+  color: var(--text-main);
   transition: background 0.2s ease;
 }
 
@@ -281,8 +292,8 @@ body {
 
 /* BADGES */
 .badge {
-  background: #222;
-  color: #ccc;
+  background: var(--border-color);
+  color: var(--text-main);
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 0.85rem;
@@ -631,4 +642,89 @@ body {
 .btn-view-bill:hover {
   background: var(--primary-red-hover);
   transform: translateY(-1px);
+}
+
+/* REPORT STAT CARDS */
+.report-stat-card {
+  background: var(--bg-dark);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 20px 24px;
+  text-align: center;
+  transition: border-color 0.3s ease;
+}
+
+.report-stat-card:hover {
+  border-color: #444;
+}
+
+.report-stat-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.report-stat-value {
+  color: var(--text-main);
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+/* HELPER STEPS */
+.helper-steps {
+  margin-top: 24px;
+  padding: 28px 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  border-left: 4px solid var(--primary-red);
+}
+
+.helper-steps h3 {
+  color: var(--text-main);
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.helper-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.helper-step:last-child {
+  border-bottom: none;
+}
+
+.step-number {
+  background: var(--primary-red);
+  color: #fff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.step-text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  padding-top: 3px;
+}
+
+.step-text strong {
+  color: var(--text-main);
 }

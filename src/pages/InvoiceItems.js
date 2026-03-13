@@ -49,6 +49,28 @@ const InvoiceItems = () => {
           {error && <p className="error-msg">{error}</p>}
         </div>
 
+        {!result && (
+          <div className="helper-steps">
+            <h3>📖 How to Add Items to an Invoice</h3>
+            <div className="helper-step">
+              <div className="step-number">1</div>
+              <div className="step-text">Enter the <strong>Invoice ID</strong> you received after creating an invoice.</div>
+            </div>
+            <div className="helper-step">
+              <div className="step-number">2</div>
+              <div className="step-text"><strong>Select a product</strong> from the dropdown list. It shows the name, price, and available stock.</div>
+            </div>
+            <div className="helper-step">
+              <div className="step-number">3</div>
+              <div className="step-text">Enter the <strong>quantity</strong> the customer wants to purchase.</div>
+            </div>
+            <div className="helper-step">
+              <div className="step-number">4</div>
+              <div className="step-text">Click <strong>"Add Item"</strong>. You can repeat this to add more products to the same invoice.</div>
+            </div>
+          </div>
+        )}
+
         {result && (
           <div className="card success-card">
             <h3>✅ Item Added!</h3>

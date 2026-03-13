@@ -5,7 +5,7 @@ import { loginUser, registerTenant } from "../api";
 const Login = () => {
   const navigate = useNavigate();
   const [isRegister, setIsRegister] = useState(false);
-  const [form, setForm] = useState({ email: "", password: "", tenant_name: "", gst_number: "" });
+  const [form, setForm] = useState({ email: "", password: "", tenant_name: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -21,16 +21,27 @@ const Login = () => {
     try {
       let res;
       if (isRegister) {
-        res = await registerTenant({ tenant_name: form.tenant_name, gst_number: form.gst_number, email: form.email, password: form.password });
+        res = await registerTenant({ tenant_name: form.tenant_name, email: form.email, password: form.password });
       } else {
         res = await loginUser(form.email, form.password);
       }
       localStorage.setItem("token", res.data.access_token);
       localStorage.setItem("tenant_id", res.data.tenant_id);
       localStorage.setItem("role", res.data.role);
-      navigate("/dashboard");
+      if (res.data.role === "SuperAdmin") {
+        navigate("/admin-dashboard");
+      } else {
+        navigate("/dashboard");
+      }
     } catch (err) {
-      setError(err.response?.data?.detail || "Something went wrong");
+      const detail = err.response?.data?.detail;
+      if (Array.isArray(detail)) {
+        setError(detail[0].msg || "Validation error");
+      } else if (typeof detail === 'object') {
+        setError(JSON.stringify(detail));
+      } else {
+        setError(detail || "Something went wrong");
+      }
     } finally {
       setLoading(false);
     }
@@ -46,7 +57,6 @@ const Login = () => {
         {isRegister && (
           <>
             <input name="tenant_name" placeholder="Business Name" onChange={handleChange} className="input" />
-            <input name="gst_number" placeholder="GST Number (optional)" onChange={handleChange} className="input" />
           </>
         )}
         <input name="email" type="email" placeholder="Email Address" onChange={handleChange} className="input" />

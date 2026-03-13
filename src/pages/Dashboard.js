@@ -13,6 +13,8 @@ const Dashboard = () => {
     { title: "Invoice Items", desc: "Add products to invoices", icon: "➕", link: "/invoice-items" },
     { title: "View Bill", desc: "View and download invoices as PDF", icon: "📄", link: "/bill" },
     { title: "Bill History", desc: "View all past bills", icon: "📋", link: "/bill-history" },
+    { title: "Sales Reports", desc: "Generate daily & monthly sales reports", icon: "📊", link: "/reports" },
+    { title: "Sales Graph", desc: "Visual charts for recent sales", icon: "📈", link: "/sales-graph" },
   ];
 
   return (

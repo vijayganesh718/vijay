@@ -65,14 +65,15 @@ const BillView = () => {
         doc.setFont("helvetica", "normal");
         doc.text(`Shop Name     : ${bill.shop_name}`, 20, 40);
         doc.text(`Date          : ${bill.date}`, 20, 48);
-        doc.text(`Customer Name : ${bill.customer_name}`, 20, 56);
+        doc.text(`Time          : ${bill.time}`, 20, 56);
+        doc.text(`Customer Name : ${bill.customer_name}`, 20, 64);
 
         // Line before table
-        doc.line(20, 62, pageWidth - 20, 62);
+        doc.line(20, 70, pageWidth - 20, 70);
 
         // Items table
         autoTable(doc, {
-            startY: 66,
+            startY: 74,
             head: [["S.No", "Item Name", "Qty", "Price"]],
             body: bill.items.map((item) => [
                 item.sno,
@@ -138,6 +139,28 @@ const BillView = () => {
                     {error && <p className="error-msg">{error}</p>}
                 </div>
 
+                {!bill && (
+                  <div className="helper-steps">
+                    <h3>📖 How to View a Bill</h3>
+                    <div className="helper-step">
+                      <div className="step-number">1</div>
+                      <div className="step-text">Enter the <strong>Invoice ID</strong> in the field above. You can find this from the <strong>Invoices</strong> or <strong>Bill History</strong> page.</div>
+                    </div>
+                    <div className="helper-step">
+                      <div className="step-number">2</div>
+                      <div className="step-text">Click the <strong>"View Bill"</strong> button to load the complete bill with all items.</div>
+                    </div>
+                    <div className="helper-step">
+                      <div className="step-number">3</div>
+                      <div className="step-text">Review the bill details — shop name, customer, items, and total amount.</div>
+                    </div>
+                    <div className="helper-step">
+                      <div className="step-number">4</div>
+                      <div className="step-text">Click <strong>"Download PDF"</strong> to save the bill as a professional PDF document.</div>
+                    </div>
+                  </div>
+                )}
+
                 {bill && (
                     <div className="bill-container">
                         <div className="bill-receipt">
@@ -155,6 +178,11 @@ const BillView = () => {
                                     <span className="bill-label">Date</span>
                                     <span className="bill-colon">:</span>
                                     <span className="bill-value">{bill.date}</span>
+                                </div>
+                                <div className="bill-info-row">
+                                    <span className="bill-label">Time</span>
+                                    <span className="bill-colon">:</span>
+                                    <span className="bill-value">{bill.time}</span>
                                 </div>
                                 <div className="bill-info-row">
                                     <span className="bill-label">Customer Name</span>
