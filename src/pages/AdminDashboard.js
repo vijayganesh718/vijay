@@ -69,7 +69,7 @@ const AdminDashboard = () => {
             </div>
             <div className="report-stat-card">
               <div className="report-stat-label">Total Revenue</div>
-              <div className="report-stat-value" style={{ color: "#2ecc71", fontSize: "1.4rem" }}>₹{stats.total_revenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
+              <div className="report-stat-value" style={{ color: "#2ecc71", fontSize: "1.4rem" }}>₹{stats.total_revenue.toLocaleString('en-IN', { minimumFractionDigits: 0 })}</div>
             </div>
             <div className="report-stat-card">
               <div className="report-stat-label">Total Products</div>
@@ -83,13 +83,14 @@ const AdminDashboard = () => {
         )}
 
         {/* Tenants Table */}
-        <div className="card">
+        <div className="card" style={{ transform: "none" }}>
           <h3>📋 All Registered Shops</h3>
 
           {tenants.length === 0 ? (
             <p className="empty-msg">No shops registered yet.</p>
           ) : (
-            <table className="data-table">
+            <div style={{ overflowX: "auto" }}>
+            <table className="data-table" style={{ whiteSpace: "nowrap" }}>
               <thead>
                 <tr>
                   <th>ID</th>
@@ -113,7 +114,7 @@ const AdminDashboard = () => {
                     <td>{t.total_products}</td>
                     <td>{t.total_customers}</td>
                     <td>{t.total_invoices}</td>
-                    <td>₹{t.total_revenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+                    <td>₹{t.total_revenue.toLocaleString('en-IN', { minimumFractionDigits: 0 })}</td>
                     <td>{t.created_at}</td>
                     <td>
                       {t.is_active ? (
@@ -144,6 +145,7 @@ const AdminDashboard = () => {
                 ))}
               </tbody>
             </table>
+            </div>
           )}
         </div>
       </div>

@@ -57,29 +57,43 @@ const BillView = () => {
         doc.text("BILL", pageWidth / 2, 25, { align: "center" });
 
         // Top line
-        doc.setLineWidth(0.5);
+        doc.setLineWidth(1);
         doc.line(20, 30, pageWidth - 20, 30);
 
-        // Bill info
+        // Bill info — fixed X positions for alignment
+        const labelX = 20;
+        const colonX = 75;
+        const valueX = 80;
         doc.setFontSize(12);
         doc.setFont("helvetica", "normal");
-        doc.text(`Shop Name     : ${bill.shop_name}`, 20, 40);
-        doc.text(`Date          : ${bill.date}`, 20, 48);
-        doc.text(`Time          : ${bill.time}`, 20, 56);
-        doc.text(`Customer Name : ${bill.customer_name}`, 20, 64);
+        doc.text("Shop Name", labelX, 40);
+        doc.text(":", colonX, 40);
+        doc.text(`${bill.shop_name}`, valueX, 40);
+        doc.text("Date", labelX, 48);
+        doc.text(":", colonX, 48);
+        doc.text(`${bill.date}`, valueX, 48);
+        doc.text("Time", labelX, 56);
+        doc.text(":", colonX, 56);
+        doc.text(`${bill.time}`, valueX, 56);
+        doc.text("Customer Name", labelX, 64);
+        doc.text(":", colonX, 64);
+        doc.text(`${bill.customer_name}`, valueX, 64);
 
         // Line before table
         doc.line(20, 70, pageWidth - 20, 70);
 
-        // Items table
+        // Items table with GST
         autoTable(doc, {
             startY: 74,
-            head: [["S.No", "Item Name", "Qty", "Price"]],
+            head: [["S.No", "Item Name", "Qty", "Price", "GST %", "GST Amt", "Total"]],
             body: bill.items.map((item) => [
                 item.sno,
                 item.name,
                 item.quantity,
-                `${item.price.toFixed(2)}`,
+                `${item.price.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+                `${item.gst_rate}%`,
+                `${item.gst_amount.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+                `${item.total.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
             ]),
             theme: "grid",
             headStyles: {
@@ -89,29 +103,44 @@ const BillView = () => {
                 halign: "center",
             },
             columnStyles: {
-                0: { halign: "center", cellWidth: 20 },
+                0: { halign: "center", cellWidth: 15 },
                 1: { halign: "left" },
-                2: { halign: "center", cellWidth: 25 },
-                3: { halign: "right", cellWidth: 35 },
+                2: { halign: "center", cellWidth: 15 },
+                3: { halign: "right", cellWidth: 25 },
+                4: { halign: "center", cellWidth: 20 },
+                5: { halign: "right", cellWidth: 25 },
+                6: { halign: "right", cellWidth: 25 },
             },
             margin: { left: 20, right: 20 },
             styles: {
-                fontSize: 11,
+                fontSize: 10,
                 cellPadding: 4,
+                lineWidth: 0.5,
+                lineColor: [0, 0, 0],
             },
         });
 
-        // Total
+        // GST Breakdown — fixed X positions
         const finalY = doc.lastAutoTable.finalY + 10;
+        doc.setLineWidth(1);
         doc.line(20, finalY - 4, pageWidth - 20, finalY - 4);
+        const sumLabelX = 20;
+        const sumColonX = 85;
+        const sumValueX = 90;
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "normal");
+        doc.text("Subtotal (before GST)", sumLabelX, finalY + 4);
+        doc.text(":", sumColonX, finalY + 4);
+        doc.text(`Rs. ${bill.subtotal.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, sumValueX, finalY + 4);
+        doc.text("Total GST", sumLabelX, finalY + 12);
+        doc.text(":", sumColonX, finalY + 12);
+        doc.text(`Rs. ${bill.total_gst.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, sumValueX, finalY + 12);
         doc.setFontSize(13);
         doc.setFont("helvetica", "bold");
-        doc.text(
-            `Total Amount : Rs. ${bill.total.toFixed(2)}`,
-            20,
-            finalY + 4
-        );
-        doc.line(20, finalY + 10, pageWidth - 20, finalY + 10);
+        doc.text("Grand Total", sumLabelX, finalY + 22);
+        doc.text(":", sumColonX, finalY + 22);
+        doc.text(`Rs. ${bill.total.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, sumValueX, finalY + 22);
+        doc.line(20, finalY + 28, pageWidth - 20, finalY + 28);
 
         doc.save(`Bill_Invoice_${bill.invoice_id}.pdf`);
     };
@@ -200,6 +229,9 @@ const BillView = () => {
                                         <th>Item Name</th>
                                         <th>Qty</th>
                                         <th>Price</th>
+                                        <th>GST %</th>
+                                        <th>GST Amt</th>
+                                        <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -208,7 +240,10 @@ const BillView = () => {
                                             <td>{item.sno}</td>
                                             <td>{item.name}</td>
                                             <td>{item.quantity}</td>
-                                            <td>₹{item.price.toFixed(2)}</td>
+                                            <td>₹{item.price.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                                            <td>{item.gst_rate}%</td>
+                                            <td>₹{item.gst_amount.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                                            <td>₹{item.total.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -216,9 +251,20 @@ const BillView = () => {
 
                             <div className="bill-header-line"></div>
 
-                            <div className="bill-total">
-                                <span>Total Amount</span>
-                                <strong>₹{bill.total.toFixed(2)}</strong>
+                            <div className="bill-total" style={{ flexDirection: "column", gap: "8px" }}>
+                                <div style={{ display: "flex", justifyContent: "space-between", color: "var(--text-muted)" }}>
+                                    <span>Subtotal</span>
+                                    <span>₹{bill.subtotal.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                                </div>
+                                <div style={{ display: "flex", justifyContent: "space-between", color: "#e67e22" }}>
+                                    <span>GST</span>
+                                    <span>₹{bill.total_gst.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</span>
+                                </div>
+                                <div className="bill-header-line" style={{ margin: "4px 0" }}></div>
+                                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "1.2rem" }}>
+                                    <span><strong>Grand Total</strong></span>
+                                    <strong>₹{bill.total.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</strong>
+                                </div>
                             </div>
 
                             <div className="bill-header-line"></div>

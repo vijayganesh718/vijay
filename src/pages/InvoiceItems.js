@@ -40,7 +40,7 @@ const InvoiceItems = () => {
             <select value={form.product_id} onChange={(e) => setForm({ ...form, product_id: e.target.value })} className="input">
               <option value="">-- Select Product --</option>
               {products.map((p) => (
-                <option key={p.id} value={p.id}>{p.name} — ₹{parseFloat(p.price).toFixed(2)} (Stock: {p.stock})</option>
+                <option key={p.id} value={p.id}>{p.name} — ₹{parseFloat(p.price).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })} (Stock: {p.stock})</option>
               ))}
             </select>
             <input placeholder="Quantity" type="number" min="1" value={form.quantity} onChange={(e) => setForm({ ...form, quantity: e.target.value })} className="input" />
@@ -79,8 +79,10 @@ const InvoiceItems = () => {
               <div className="invoice-detail-row"><span>Invoice ID:</span><strong>#{result.invoice_id}</strong></div>
               <div className="invoice-detail-row"><span>Product ID:</span><strong>{result.product_id}</strong></div>
               <div className="invoice-detail-row"><span>Quantity:</span><strong>{result.quantity}</strong></div>
-              <div className="invoice-detail-row"><span>Line Total:</span><strong>₹{parseFloat(result.line_total).toFixed(2)}</strong></div>
-              <div className="invoice-detail-row"><span>Invoice Total:</span><strong>₹{parseFloat(result.invoice_total).toFixed(2)}</strong></div>
+              <div className="invoice-detail-row"><span>Base Total:</span><strong>₹{parseFloat(result.base_total).toLocaleString('en-IN', { minimumFractionDigits: 0 })}</strong></div>
+              <div className="invoice-detail-row"><span>GST ({result.gst_rate}%):</span><strong>₹{parseFloat(result.gst_amount).toLocaleString('en-IN', { minimumFractionDigits: 0 })}</strong></div>
+              <div className="invoice-detail-row"><span>Line Total (incl. GST):</span><strong>₹{parseFloat(result.line_total).toLocaleString('en-IN', { minimumFractionDigits: 0 })}</strong></div>
+              <div className="invoice-detail-row"><span>Invoice Total:</span><strong>₹{parseFloat(result.invoice_total).toLocaleString('en-IN', { minimumFractionDigits: 0 })}</strong></div>
             </div>
           </div>
         )}

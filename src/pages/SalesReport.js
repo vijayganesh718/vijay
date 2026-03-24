@@ -43,15 +43,26 @@ const SalesReport = () => {
     doc.setFont("helvetica", "bold");
     doc.text("DAILY SALES REPORT", pageWidth / 2, 20, { align: "center" });
 
-    doc.setLineWidth(0.5);
+    doc.setLineWidth(1);
     doc.line(20, 25, pageWidth - 20, 25);
 
+    const labelX = 20;
+    const colonX = 65;
+    const valueX = 70;
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    doc.text(`Date         : ${report.date}`, 20, 35);
-    doc.text(`Total Bills  : ${report.total_bills}`, 20, 43);
-    doc.text(`Total Items  : ${report.total_items}`, 20, 51);
-    doc.text(`Total Sales  : Rs. ${report.total_sales.toFixed(2)}`, 20, 59);
+    doc.text("Date", labelX, 35);
+    doc.text(":", colonX, 35);
+    doc.text(`${report.date}`, valueX, 35);
+    doc.text("Total Bills", labelX, 43);
+    doc.text(":", colonX, 43);
+    doc.text(`${report.total_bills}`, valueX, 43);
+    doc.text("Total Items", labelX, 51);
+    doc.text(":", colonX, 51);
+    doc.text(`${report.total_items}`, valueX, 51);
+    doc.text("Total Sales", labelX, 59);
+    doc.text(":", colonX, 59);
+    doc.text(`Rs. ${report.total_sales.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, valueX, 59);
 
     doc.line(20, 64, pageWidth - 20, 64);
 
@@ -65,22 +76,24 @@ const SalesReport = () => {
           item.customer_name,
           item.product_name,
           item.quantity,
-          `${item.price.toFixed(2)}`,
-          `${item.total.toFixed(2)}`
+          `${item.price.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`,
+          `${item.total.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`
         ]),
         theme: "grid",
         headStyles: { fillColor: [40, 40, 40], textColor: [255, 255, 255], fontStyle: "bold", halign: "center" },
-        styles: { fontSize: 9, cellPadding: 3 },
+        styles: { fontSize: 9, cellPadding: 3, lineWidth: 0.5, lineColor: [0, 0, 0] },
         margin: { left: 20, right: 20 },
       });
     }
 
     const finalY = report.items.length > 0 ? doc.lastAutoTable.finalY + 10 : 74;
-    doc.setLineWidth(0.5);
+    doc.setLineWidth(1);
     doc.line(20, finalY - 4, pageWidth - 20, finalY - 4);
     doc.setFontSize(13);
     doc.setFont("helvetica", "bold");
-    doc.text(`Grand Total : Rs. ${report.total_sales.toFixed(2)}`, 20, finalY + 4);
+    doc.text("Grand Total", 20, finalY + 4);
+    doc.text(":", 65, finalY + 4);
+    doc.text(`Rs. ${report.total_sales.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, 70, finalY + 4);
     doc.line(20, finalY + 10, pageWidth - 20, finalY + 10);
 
     doc.save(`Daily_Report_${report.date}.pdf`);
@@ -95,14 +108,23 @@ const SalesReport = () => {
     doc.setFont("helvetica", "bold");
     doc.text("MONTHLY SALES REPORT", pageWidth / 2, 20, { align: "center" });
 
-    doc.setLineWidth(0.5);
+    doc.setLineWidth(1);
     doc.line(20, 25, pageWidth - 20, 25);
 
+    const labelX = 20;
+    const colonX = 65;
+    const valueX = 70;
     doc.setFontSize(12);
     doc.setFont("helvetica", "normal");
-    doc.text(`Month        : ${report.month} ${report.year}`, 20, 35);
-    doc.text(`Total Bills  : ${report.total_bills}`, 20, 43);
-    doc.text(`Total Sales  : Rs. ${report.total_sales.toFixed(2)}`, 20, 51);
+    doc.text("Month", labelX, 35);
+    doc.text(":", colonX, 35);
+    doc.text(`${report.month} ${report.year}`, valueX, 35);
+    doc.text("Total Bills", labelX, 43);
+    doc.text(":", colonX, 43);
+    doc.text(`${report.total_bills}`, valueX, 43);
+    doc.text("Total Sales", labelX, 51);
+    doc.text(":", colonX, 51);
+    doc.text(`Rs. ${report.total_sales.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, valueX, 51);
 
     doc.line(20, 56, pageWidth - 20, 56);
 
@@ -115,10 +137,10 @@ const SalesReport = () => {
       autoTable(doc, {
         startY: 68,
         head: [["Date", "Bills", "Sales (Rs.)"]],
-        body: report.day_wise.map((d) => [d.date, d.bills, d.sales.toFixed(2)]),
+        body: report.day_wise.map((d) => [d.date, d.bills, d.sales.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })]),
         theme: "grid",
         headStyles: { fillColor: [40, 40, 40], textColor: [255, 255, 255], fontStyle: "bold", halign: "center" },
-        styles: { fontSize: 10, cellPadding: 4 },
+        styles: { fontSize: 10, cellPadding: 4, lineWidth: 0.5, lineColor: [0, 0, 0] },
         columnStyles: { 2: { halign: "right" } },
         margin: { left: 20, right: 20 },
       });
@@ -134,21 +156,23 @@ const SalesReport = () => {
       autoTable(doc, {
         startY: afterDayTable + 4,
         head: [["Product", "Qty Sold", "Revenue (Rs.)"]],
-        body: report.top_products.map((p) => [p.name, p.quantity, p.revenue.toFixed(2)]),
+        body: report.top_products.map((p) => [p.name, p.quantity, p.revenue.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })]),
         theme: "grid",
         headStyles: { fillColor: [40, 40, 40], textColor: [255, 255, 255], fontStyle: "bold", halign: "center" },
-        styles: { fontSize: 10, cellPadding: 4 },
+        styles: { fontSize: 10, cellPadding: 4, lineWidth: 0.5, lineColor: [0, 0, 0] },
         columnStyles: { 2: { halign: "right" } },
         margin: { left: 20, right: 20 },
       });
     }
 
     const finalY = doc.lastAutoTable ? doc.lastAutoTable.finalY + 10 : 64;
-    doc.setLineWidth(0.5);
+    doc.setLineWidth(1);
     doc.line(20, finalY - 4, pageWidth - 20, finalY - 4);
     doc.setFontSize(13);
     doc.setFont("helvetica", "bold");
-    doc.text(`Grand Total : Rs. ${report.total_sales.toFixed(2)}`, 20, finalY + 4);
+    doc.text("Grand Total", 20, finalY + 4);
+    doc.text(":", 65, finalY + 4);
+    doc.text(`Rs. ${report.total_sales.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, 70, finalY + 4);
     doc.line(20, finalY + 10, pageWidth - 20, finalY + 10);
 
     doc.save(`Monthly_Report_${report.month}_${report.year}.pdf`);
@@ -257,7 +281,7 @@ const SalesReport = () => {
               </div>
               <div className="report-stat-card">
                 <div className="report-stat-label">Total Sales</div>
-                <div className="report-stat-value" style={{ color: "#2ecc71" }}>₹{report.total_sales.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
+                <div className="report-stat-value" style={{ color: "#2ecc71" }}>₹{report.total_sales.toLocaleString('en-IN', { minimumFractionDigits: 0 })}</div>
               </div>
             </div>
 
@@ -282,8 +306,8 @@ const SalesReport = () => {
                       <td>{item.customer_name}</td>
                       <td>{item.product_name}</td>
                       <td>{item.quantity}</td>
-                      <td>₹{item.price.toFixed(2)}</td>
-                      <td>₹{item.total.toFixed(2)}</td>
+                      <td>₹{item.price.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
+                      <td>₹{item.total.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -310,7 +334,7 @@ const SalesReport = () => {
               </div>
               <div className="report-stat-card">
                 <div className="report-stat-label">Total Sales</div>
-                <div className="report-stat-value" style={{ color: "#2ecc71" }}>₹{report.total_sales.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</div>
+                <div className="report-stat-value" style={{ color: "#2ecc71" }}>₹{report.total_sales.toLocaleString('en-IN', { minimumFractionDigits: 0 })}</div>
               </div>
             </div>
 
@@ -326,7 +350,7 @@ const SalesReport = () => {
                       <tr key={idx}>
                         <td>{d.date}</td>
                         <td>{d.bills}</td>
-                        <td>₹{d.sales.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+                        <td>₹{d.sales.toLocaleString('en-IN', { minimumFractionDigits: 0 })}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -346,7 +370,7 @@ const SalesReport = () => {
                       <tr key={idx}>
                         <td>{p.name}</td>
                         <td>{p.quantity}</td>
-                        <td>₹{p.revenue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+                        <td>₹{p.revenue.toLocaleString('en-IN', { minimumFractionDigits: 0 })}</td>
                       </tr>
                     ))}
                   </tbody>

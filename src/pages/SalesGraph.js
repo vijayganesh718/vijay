@@ -36,7 +36,7 @@ const SalesGraph = () => {
                   cursor={{ fill: 'rgba(255, 255, 255, 0.05)' }}
                   contentStyle={{ backgroundColor: 'var(--bg-dark)', borderRadius: '8px', border: '1px solid var(--border-color)' }}
                   itemStyle={{ color: '#2ecc71', fontWeight: 'bold' }}
-                  formatter={(value) => [`₹${value.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`, 'Sales']}
+                  formatter={(value) => [`₹${value.toLocaleString("en-IN", { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`, 'Sales']}
                 />
                 <Bar dataKey="sales" fill="var(--primary-red)" radius={[4, 4, 0, 0]} barSize={60} />
               </BarChart>

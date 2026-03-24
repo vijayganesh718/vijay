@@ -81,8 +81,8 @@ const Invoices = () => {
                   top: "100%",
                   left: 0,
                   right: 0,
-                  background: "var(--card-bg, #1e1e2f)",
-                  border: "1px solid var(--border-color, #333)",
+                  background: "var(--bg-card)",
+                  border: "1px solid var(--border-color)",
                   borderRadius: "8px",
                   maxHeight: "200px",
                   overflowY: "auto",
@@ -90,23 +90,25 @@ const Invoices = () => {
                   boxShadow: "0 4px 12px rgba(0,0,0,0.3)"
                 }}>
                   {filteredCustomers.length === 0 ? (
-                    <div style={{ padding: "10px 14px", color: "#888" }}>No customers found</div>
+                    <div style={{ padding: "10px 14px", color: "var(--text-muted)" }}>No customers found</div>
                   ) : (
                     filteredCustomers.map((c) => (
                       <div
                         key={c.id}
                         onClick={() => handleSelectCustomer(c)}
+                        className="customer-dropdown-item"
                         style={{
                           padding: "10px 14px",
                           cursor: "pointer",
-                          borderBottom: "1px solid var(--border-color, #333)",
+                          color: "var(--text-main)",
+                          borderBottom: "1px solid var(--border-color)",
                           transition: "background 0.15s"
                         }}
-                        onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+                        onMouseEnter={(e) => e.currentTarget.style.background = "var(--border-color)"}
                         onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
                       >
                         <strong>{c.name}</strong>
-                        <span style={{ color: "#aaa", marginLeft: "8px" }}>
+                        <span style={{ color: "var(--text-muted)", marginLeft: "8px" }}>
                           ({c.phone || "No Phone"}) (ID: {c.id})
                         </span>
                       </div>
@@ -148,7 +150,7 @@ const Invoices = () => {
             <div className="invoice-details">
               <div className="invoice-detail-row"><span>Invoice ID:</span><strong>#{created.invoice_id}</strong></div>
               <div className="invoice-detail-row"><span>Customer ID:</span><strong>{created.customer_id}</strong></div>
-              <div className="invoice-detail-row"><span>Total:</span><strong>₹{parseFloat(created.total).toFixed(2)}</strong></div>
+              <div className="invoice-detail-row"><span>Total:</span><strong>₹{parseFloat(created.total).toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</strong></div>
             </div>
             <p className="hint">📌 Note the Invoice ID: <strong>{created.invoice_id}</strong> — use it to add items.</p>
           </div>

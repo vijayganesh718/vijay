@@ -24,12 +24,14 @@ body.light-mode {
   --primary-red: #e74c3c;
   --primary-red-hover: #c0392b;
   --border-color: #e1e4e8;
+  color-scheme: light;
 }
 
 body {
   font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: var(--bg-dark);
   color: var(--text-main);
+  color-scheme: dark;
 }
 
 /* NAVBAR */
@@ -499,7 +501,7 @@ body {
 }
 
 .bill-receipt {
-  background: #0d0d0d;
+  background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 36px 40px;
@@ -511,7 +513,7 @@ body {
 }
 
 .bill-header-line {
-  border-top: 2px dashed #444;
+  border-top: 2px dashed var(--border-color);
   margin: 14px 0;
 }
 
@@ -565,14 +567,14 @@ body {
   padding: 10px 8px;
   color: var(--text-muted);
   font-weight: 700;
-  border-bottom: 1px dashed #444;
+  border-bottom: 1px dashed var(--border-color);
   font-size: 0.85rem;
   letter-spacing: 1px;
 }
 
 .bill-table td {
   padding: 10px 8px;
-  color: #ddd;
+  color: var(--text-main);
 }
 
 .bill-table th:first-child,
@@ -603,7 +605,7 @@ body {
 }
 
 .bill-total strong {
-  color: #fff;
+  color: var(--text-main);
   font-size: 1.25rem;
 }
 

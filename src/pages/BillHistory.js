@@ -48,7 +48,7 @@ const BillHistory = () => {
                                         <td>{inv.customer_name}</td>
                                         <td>{inv.date}</td>
                                         <td>{inv.items_count}</td>
-                                        <td>₹{inv.total.toFixed(2)}</td>
+                                        <td>₹{inv.total.toLocaleString('en-IN', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}</td>
                                         <td>
                                             <button
                                                 onClick={() => handleViewBill(inv.invoice_id)}
